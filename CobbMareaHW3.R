@@ -6,6 +6,7 @@ library(beadarray)
 library(pheatmap)
 
 #' Creates the R markdown files.
+library("knitr")
 opts_knit$set(progress = FALSE, verbose = FALSE, message=FALSE)
 spin(hair = "CobbMareaHW3.R", format = "Rmd")
 file.rename("CobbMareaHW3.md", "CobbMareaHW3.Rmd")
