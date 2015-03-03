@@ -9,31 +9,6 @@ library(beadarray)
 library(pheatmap)
 ```
 
-```
-## Error in library(pheatmap): there is no package called 'pheatmap'
-```
-
-Creates the R markdown files.
-
-
-```r
-opts_knit$set(progress = FALSE, verbose = FALSE, message=FALSE)
-spin(hair = "CobbMareaHW3.R", format = "Rmd")
-```
-
-```
-## processing file: CobbMareaHW3.Rmd
-## output file: CobbMareaHW3.md
-```
-
-```r
-file.rename("CobbMareaHW3.md", "CobbMareaHW3.Rmd")
-```
-
-```
-## [1] TRUE
-```
-
 ```r
 #Loads GEO libraries and specific dataset
 library(GEOmetadb)
@@ -88,16 +63,10 @@ pData(gset_new) <- sanitize_pdata(pData(gset_new))
 macrophages <- gset_new[, grepl("Monocyte-derived Macrophage", pData(gset_new)$characteristics_ch1.1)]
 pbmcs <- gset_new[, grepl("PBMC", pData(gset_new)$characteristics_ch1.1)]
 
-# macrophages$characteristics_ch1.2
 
 mm_macrophages <- model.matrix(~characteristics_ch1.2, macrophages) # design matrix
 fit_macrophages <- lmFit(macrophages, mm_macrophages) #Fit linear model for each gene given a series of arrays
 ebay_macrophages <- eBayes(fit_macrophages) # compute moderated t-statistics, moderated F-statistic, and 29/
-colnames(fit_macrophages$coef)
-```
-
-```
-## [1] "(Intercept)"                    "characteristics_ch1.2Poly IC H"
 ```
 
 ```r
@@ -107,18 +76,6 @@ topTreatment_macrophages <- topTable(ebay_macrophages, coef = "characteristics_c
 selected_macrophages  <- p.adjust(ebay_macrophages$p.value[, 2]) <0.1
 esetSel_macrophages <- macrophages [selected_macrophages, ]
 heatmap(exprs(esetSel_macrophages))
-```
-
-```
-## Error in .External.graphics(C_layout, num.rows, num.cols, mat, as.integer(num.figures), : invalid graphics state
-```
-
-```
-## Warning in par(op): calling par(new=TRUE) with no plot
-```
-
-```
-## Error in par(op): invalid value specified for graphical parameter "pin"
 ```
 
 ```r
@@ -132,17 +89,5 @@ topTreatmentPBMCs <- topTable(ebay_pbmcs, coef = "characteristics_ch1.2Poly IC L
 selected_pbmcs  <- p.adjust(ebay_pbmcs$p.value[, 2]) <0.1
 esetSel <- pbmcs [selected_pbmcs, ]
 heatmap(exprs(esetSel))
-```
-
-```
-## Error in .External.graphics(C_layout, num.rows, num.cols, mat, as.integer(num.figures), : invalid graphics state
-```
-
-```
-## Warning in par(op): calling par(new=TRUE) with no plot
-```
-
-```
-## Error in par(op): invalid value specified for graphical parameter "pin"
 ```
 
